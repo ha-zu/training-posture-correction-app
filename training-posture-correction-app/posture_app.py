@@ -75,7 +75,7 @@ def main_training(train_mode):
     cv.destroyAllWindows()
 
 
-def cie_landmark2video(landmark_x, landmark_y)->Tuple[int, int]:
+def cie_landmark2videosize(landmark_x, landmark_y)->Tuple[int, int]:
     """landmark coordinates to video coordinates"""
 
     x = int(landmark_x * cl.VIDEO_FRAME_WIDTH)
@@ -95,28 +95,28 @@ def recording_format()->Any:
 
 def drawing_base_landmarks(image, landmarks, land_idx)->np.ndarray:
     """drawing a base landmark"""
+
     # center points coordinates
     cie = namedtuple('Coordinates', ['x', 'y'])
-
     landmark = landmarks.landmark
 
     # drawing ear points
-    r_ear_x, r_ear_y = cie_landmark2video(landmark[land_idx.RIGHT_EAR].x, landmark[land_idx.RIGHT_EAR].y)
-    l_ear_x, l_ear_y = cie_landmark2video(landmark[land_idx.LEFT_EAR].x, landmark[land_idx.LEFT_EAR].y)
+    r_ear_x, r_ear_y = cie_landmark2videosize(landmark[land_idx.RIGHT_EAR].x, landmark[land_idx.RIGHT_EAR].y)
+    l_ear_x, l_ear_y = cie_landmark2videosize(landmark[land_idx.LEFT_EAR].x, landmark[land_idx.LEFT_EAR].y)
     cv.circle(image, (r_ear_x, r_ear_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
     cv.circle(image, (l_ear_x, l_ear_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
 
     # drawing sholder, neck(c_sholder) points
-    r_sholder_x, r_sholder_y = cie_landmark2video(landmark[land_idx.RIGHT_SHOULDER].x, landmark[land_idx.RIGHT_SHOULDER].y)
-    l_sholder_x, l_sholder_y = cie_landmark2video(landmark[land_idx.LEFT_SHOULDER].x, landmark[land_idx.LEFT_SHOULDER].y)
+    r_sholder_x, r_sholder_y = cie_landmark2videosize(landmark[land_idx.RIGHT_SHOULDER].x, landmark[land_idx.RIGHT_SHOULDER].y)
+    l_sholder_x, l_sholder_y = cie_landmark2videosize(landmark[land_idx.LEFT_SHOULDER].x, landmark[land_idx.LEFT_SHOULDER].y)
     c_sholder = cie(int((r_sholder_x + l_sholder_x) / 2), int((r_sholder_y + l_sholder_y) / 2))
     cv.circle(image, (r_sholder_x, r_sholder_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
     cv.circle(image, (l_sholder_x, l_sholder_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
     cv.circle(image, (c_sholder.x, c_sholder.y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
 
     # drawing waist points
-    r_waist_x, r_waist_y = cie_landmark2video(landmark[land_idx.RIGHT_HIP].x, landmark[land_idx.RIGHT_HIP].y)
-    l_waist_x, l_waist_y = cie_landmark2video(landmark[land_idx.LEFT_HIP].x, landmark[land_idx.LEFT_HIP].y)
+    r_waist_x, r_waist_y = cie_landmark2videosize(landmark[land_idx.RIGHT_HIP].x, landmark[land_idx.RIGHT_HIP].y)
+    l_waist_x, l_waist_y = cie_landmark2videosize(landmark[land_idx.LEFT_HIP].x, landmark[land_idx.LEFT_HIP].y)
     c_waist = cie(int((r_waist_x + l_waist_x) / 2), int((r_waist_y + l_waist_y) / 2))
     cv.circle(image, (r_waist_x, r_waist_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
     cv.circle(image, (l_waist_x, l_waist_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
@@ -154,5 +154,4 @@ def drawing_push_up_landmarks(image, landmarks, landmark_idx)->np.ndarray:
 
 
 if __name__ == "__main__":
-    print(os.path.join(os.getcwd(), cl.VIDEO_OUT_DIR, '{}.mp4'.format(uuid.uuid1())))
     main_training("test")
