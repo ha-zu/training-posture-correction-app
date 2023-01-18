@@ -103,34 +103,34 @@ def drawing_base_landmarks(image, landmarks, land_idx)->np.ndarray:
     # drawing ear points
     r_ear_x, r_ear_y = cie_landmark2videosize(landmark[land_idx.RIGHT_EAR].x, landmark[land_idx.RIGHT_EAR].y)
     l_ear_x, l_ear_y = cie_landmark2videosize(landmark[land_idx.LEFT_EAR].x, landmark[land_idx.LEFT_EAR].y)
-    cv.circle(image, (r_ear_x, r_ear_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
-    cv.circle(image, (l_ear_x, l_ear_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
+    cv.circle(image, (r_ear_x, r_ear_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(image, (l_ear_x, l_ear_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
 
     # drawing sholder, neck(c_sholder) points
     r_sholder_x, r_sholder_y = cie_landmark2videosize(landmark[land_idx.RIGHT_SHOULDER].x, landmark[land_idx.RIGHT_SHOULDER].y)
     l_sholder_x, l_sholder_y = cie_landmark2videosize(landmark[land_idx.LEFT_SHOULDER].x, landmark[land_idx.LEFT_SHOULDER].y)
     c_sholder = cie(int((r_sholder_x + l_sholder_x) / 2), int((r_sholder_y + l_sholder_y) / 2))
-    cv.circle(image, (r_sholder_x, r_sholder_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
-    cv.circle(image, (l_sholder_x, l_sholder_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
-    cv.circle(image, (c_sholder.x, c_sholder.y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
+    cv.circle(image, (r_sholder_x, r_sholder_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(image, (l_sholder_x, l_sholder_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(image, (c_sholder.x, c_sholder.y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
 
     # drawing waist points
     r_waist_x, r_waist_y = cie_landmark2videosize(landmark[land_idx.RIGHT_HIP].x, landmark[land_idx.RIGHT_HIP].y)
     l_waist_x, l_waist_y = cie_landmark2videosize(landmark[land_idx.LEFT_HIP].x, landmark[land_idx.LEFT_HIP].y)
     c_waist = cie(int((r_waist_x + l_waist_x) / 2), int((r_waist_y + l_waist_y) / 2))
-    cv.circle(image, (r_waist_x, r_waist_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
-    cv.circle(image, (l_waist_x, l_waist_y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
-    cv.circle(image, (c_waist.x, c_waist.y), cl.RADIUS_SIZE, cl.COLOR_BLUE, cl.THICKNES_SIZE)
+    cv.circle(image, (r_waist_x, r_waist_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(image, (l_waist_x, l_waist_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(image, (c_waist.x, c_waist.y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
 
     # drawing line connections
-    cv.line(image, (r_ear_x, r_ear_y), (r_sholder_x, r_sholder_y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (l_ear_x, l_ear_y), (l_sholder_x, l_sholder_y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (r_sholder_x, r_sholder_y), (c_sholder.x, c_sholder.y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (l_sholder_x, l_sholder_y), (c_sholder.x, c_sholder.y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (r_sholder_x, r_sholder_y), (r_waist_x, r_waist_y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (l_sholder_x, l_sholder_y), (l_waist_x, l_waist_y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (r_waist_x, r_waist_y), (c_waist.x, c_waist.y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
-    cv.line(image, (l_waist_x, l_waist_y), (c_waist.x, c_waist.y), cl.COLOR_GREEN, cl.THICKNES_SIZE, cv.LINE_4, 0)
+    cv.line(image, (r_ear_x, r_ear_y), (r_sholder_x, r_sholder_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (l_ear_x, l_ear_y), (l_sholder_x, l_sholder_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (r_sholder_x, r_sholder_y), (c_sholder.x, c_sholder.y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (l_sholder_x, l_sholder_y), (c_sholder.x, c_sholder.y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (r_sholder_x, r_sholder_y), (r_waist_x, r_waist_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (l_sholder_x, l_sholder_y), (l_waist_x, l_waist_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (r_waist_x, r_waist_y), (c_waist.x, c_waist.y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(image, (l_waist_x, l_waist_y), (c_waist.x, c_waist.y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
 
     return image
 
