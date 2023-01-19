@@ -33,7 +33,8 @@ isort: ## Run isort
 
 lint-all: ## Run all linters
 	@make flake8
-	@make  isort
+	@make isort
+	@make black
 
 # =========================================
 # Run main file
@@ -45,4 +46,4 @@ setup: ## Install requirements.txt
 	pip install -r requirements.txt
 
 clean: ## Clean __pycache__
-	@find  $(SRC_DIR)/ -name '__pycache__' -exec rm -rf {} \;
+	@find  $(SRC_DIR) -name '__pycache__' -exec rm -rf {} \;
