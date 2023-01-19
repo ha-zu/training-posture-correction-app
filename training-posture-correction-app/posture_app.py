@@ -63,7 +63,7 @@ def main_training(train_mode: str = "desk work"):
             image = np.where(condition, image, bg_image)
 
             # drawing base posture points
-            if not landmarks is None:
+            if landmarks is not None:
                 image = drawing_base_landmarks(image, landmarks, landmarks_idx)
 
                 # train mode statement
