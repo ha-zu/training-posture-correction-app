@@ -3,6 +3,7 @@
 # use constants
 RADIUS_SIZE7 = 7
 THICKNES_SIZE3 = 3
+EXTENTOIN_CIE = 100
 
 # color set is B, G, R
 COLOR_WHITE = (255, 255, 255)
@@ -20,6 +21,3 @@ VIDEO_FRAME_RATE10 = 10
 PLANK = 'plank'
 PUSH_UP = 'push up'
 SQUAT = 'squat'
-
-# posture menu
-DESK_WORK = 'desk work'
