@@ -13,11 +13,11 @@ COLOR_GREEN = (0, 204, 0)
 VIDEO_FRAME_WIDTH = 1280
 VIDEO_FRAME_HEIGHT = 720
 VIDEO_CAMERA_MAC = 0
-VIDEO_OUT_DIR =  'data'
-IMAGE_OUT_DIR = 'image'
+VIDEO_OUT_DIR = "data"
+IMAGE_OUT_DIR = "image"
 VIDEO_FRAME_RATE10 = 10
 
-#training menu
-PLANK = 'plank'
-PUSH_UP = 'push up'
-SQUAT = 'squat'
+# training menu
+PLANK = "plank"
+PUSH_UP = "push up"
+SQUAT = "squat"
