@@ -452,9 +452,168 @@ def drawing_plank_landmarks(image, landmarks, land_idx) -> np.ndarray:
 
 def drawing_push_up_landmarks(image, landmarks, land_idx) -> np.ndarray:
     """drawing a push up training landmark"""
-    # toe, heel, knee, waist, sholder, elbow, neck, head
-    pass
+    # toe, heel, knee, waist, sholder, elbow, wrist
+
+    landmark = landmarks.landmark
+
+    # drawing sholder, neck(c_sholder) points
+    # r_sholder_x, r_sholder_y = cie_landmark2videosize(landmark[land_idx.RIGHT_SHOULDER].x, landmark[land_idx.RIGHT_SHOULDER].y)
+    l_sholder_x, l_sholder_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_SHOULDER].x, landmark[land_idx.LEFT_SHOULDER].y
+    )
+    # cv.circle(image, (r_sholder_x, r_sholder_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image,
+        (l_sholder_x, l_sholder_y),
+        cl.RADIUS_SIZE7,
+        cl.COLOR_BLUE,
+        cl.THICKNES_SIZE3,
+    )
+
+    # drawing elbow points
+    # r_elbow_x, r_elbow_y = cie_landmark2videosize(landmark[land_idx.RIGHT_ELBOW].x, landmark[land_idx.RIGHT_ELBOW].y)
+    l_elbow_x, l_elbow_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_ELBOW].x, landmark[land_idx.LEFT_ELBOW].y
+    )
+    # cv.circle(image, (r_elbow_x, r_elbow_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image,
+        (l_elbow_x, l_elbow_y),
+        cl.RADIUS_SIZE7,
+        cl.COLOR_BLUE,
+        cl.THICKNES_SIZE3,
+    )
+
+    # drawing wrist points
+    # r_wrist_x, r_wrist_y = cie_landmark2videosize(landmark[land_idx.RIGHT_WRIST].x, landmark[land_idx.RIGHT_WRIST].y)
+    l_wrist_x, l_wrist_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_WRIST].x, landmark[land_idx.LEFT_WRIST].y
+    )
+    # cv.circle(image, (r_wrist_x, r_wrist_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image,
+        (l_wrist_x, l_wrist_y),
+        cl.RADIUS_SIZE7,
+        cl.COLOR_BLUE,
+        cl.THICKNES_SIZE3,
+    )
+
+    # drawing waist points
+    # r_waist_x, r_waist_y = cie_landmark2videosize(landmark[land_idx.RIGHT_HIP].x, landmark[land_idx.RIGHT_HIP].y)
+    l_waist_x, l_waist_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_HIP].x, landmark[land_idx.LEFT_HIP].y
+    )
+    # cv.circle(image, (r_waist_x, r_waist_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image, (l_waist_x, l_waist_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3
+    )
+
+    # drawing knee points
+    # r_knee_x, r_knee_y = cie_landmark2videosize(landmark[land_idx.RIGHT_KNEE].x, landmark[land_idx.RIGHT_KNEE].y)
+    l_knee_x, l_knee_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_KNEE].x, landmark[land_idx.LEFT_KNEE].y
+    )
+    # cv.circle(image, (r_knee_x, r_knee_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image, (l_knee_x, l_knee_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3
+    )
+
+    # drawing ankle points
+    # r_ankle_x, r_ankle_y = cie_landmark2videosize(landmark[land_idx.RIGHT_ANKLE].x, landmark[land_idx.RIGHT_ANKLE].y)
+    l_ankle_x, l_ankle_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_ANKLE].x, landmark[land_idx.LEFT_ANKLE].y
+    )
+    # cv.circle(image, (r_ankle_x, r_ankle_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image, (l_ankle_x, l_ankle_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3
+    )
+
+    # drawing heel points
+    # r_heel_x, r_heel_y = cie_landmark2videosize(landmark[land_idx.RIGHT_HEEL].x, landmark[land_idx.RIGHT_HEEL].y)
+    l_heel_x, l_heel_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_HEEL].x, landmark[land_idx.LEFT_HEEL].y
+    )
+    # cv.circle(image, (r_heel_x, r_heel_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image, (l_heel_x, l_heel_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3
+    )
+
+    # drawing toe points
+    # r_toe_x, r_toe_y = cie_landmark2videosize(landmark[land_idx.RIGHT_FOOT_INDEX].x, landmark[land_idx.RIGHT_FOOT_INDEX].y)
+    l_toe_x, l_toe_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_FOOT_INDEX].x, landmark[land_idx.LEFT_FOOT_INDEX].y
+    )
+    # cv.circle(image, (r_toe_x, r_toe_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
+    cv.circle(
+        image, (l_toe_x, l_toe_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3
+    )
+
+    # drawing line connections
+    # cv.line(image, (r_sholder_x, r_sholder_y), (r_elbow_x, r_elbow_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(
+        image,
+        (l_sholder_x, l_sholder_y),
+        (l_elbow_x, l_elbow_y),
+        cl.COLOR_GREEN,
+        cl.THICKNES_SIZE3,
+        cv.LINE_4,
+        0,
+    )
+
+    # cv.line(image, (r_elbow_x, r_elbow_y), (r_wrist_x, r_wrist_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(
+        image,
+        (l_elbow_x, l_elbow_y),
+        (l_wrist_x, l_wrist_y),
+        cl.COLOR_GREEN,
+        cl.THICKNES_SIZE3,
+        cv.LINE_4,
+        0,
+    )
+
+    # cv.line(image, (r_waist_x, r_waist_y), (r_knee_x, r_knee_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(
+        image,
+        (l_waist_x, l_waist_y),
+        (l_knee_x, l_knee_y),
+        cl.COLOR_GREEN,
+        cl.THICKNES_SIZE3,
+        cv.LINE_4,
+        0,
+    )
+    # cv.line(image, (r_knee_x, r_knee_y), (r_ankle_x, r_ankle_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(
+        image,
+        (l_knee_x, l_knee_y),
+        (l_ankle_x, l_ankle_y),
+        cl.COLOR_GREEN,
+        cl.THICKNES_SIZE3,
+        cv.LINE_4,
+        0,
+    )
+    # cv.line(image, (r_ankle_x, r_ankle_y), (r_heel_x, r_heel_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(
+        image,
+        (l_ankle_x, l_ankle_y),
+        (l_heel_x, l_heel_y),
+        cl.COLOR_GREEN,
+        cl.THICKNES_SIZE3,
+        cv.LINE_4,
+        0,
+    )
+    # cv.line(image, (r_heel_x, r_heel_y), (r_toe_x, r_toe_y), cl.COLOR_GREEN, cl.THICKNES_SIZE3, cv.LINE_4, 0)
+    cv.line(
+        image,
+        (l_heel_x, l_heel_y),
+        (l_toe_x, l_toe_y),
+        cl.COLOR_GREEN,
+        cl.THICKNES_SIZE3,
+        cv.LINE_4,
+        0,
+    )
+
+    return image
 
 
 if __name__ == "__main__":
-    main_training(cl.SQUAT)
+    main_training(cl.PUSH_UP)
