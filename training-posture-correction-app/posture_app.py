@@ -331,9 +331,9 @@ def drawing_plank_landmarks(image, landmarks, land_idx) -> np.ndarray:
     )
 
     # drawing elbow points
-    # r_elbow_x, r_elbow_y = cie_landmark2videosize(landmark[land_idx.RIGHT_SHOULDER].x, landmark[land_idx.RIGHT_SHOULDER].y)
+    # r_elbow_x, r_elbow_y = cie_landmark2videosize(landmark[land_idx.RIGHT_ELBOW].x, landmark[land_idx.RIGHT_ELBOW].y)
     l_elbow_x, l_elbow_y = cie_landmark2videosize(
-        landmark[land_idx.LEFT_SHOULDER].x, landmark[land_idx.LEFT_SHOULDER].y
+        landmark[land_idx.LEFT_ELBOW].x, landmark[land_idx.LEFT_ELBOW].y
     )
     # cv.circle(image, (r_elbow_x, r_elbow_y), cl.RADIUS_SIZE7, cl.COLOR_BLUE, cl.THICKNES_SIZE3)
     cv.circle(
