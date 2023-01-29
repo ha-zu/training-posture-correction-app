@@ -18,6 +18,10 @@ IMAGE_OUT_DIR = "image"
 VIDEO_FRAME_RATE10 = 10
 
 # training menu
+DESK_WORK = "desk work"
 PLANK = "plank"
 PUSH_UP = "push up"
 SQUAT = "squat"
+
+# out angle
+STRAIGHT_NECK_ANGLE = 30.0

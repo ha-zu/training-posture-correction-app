@@ -1,3 +1,4 @@
+import math
 import os
 import uuid
 from collections import namedtuple
@@ -9,7 +10,7 @@ import numpy as np
 from constant import constant_list as cl
 
 
-def main_training(train_mode: str = "desk work"):
+def main_training(train_mode: str = cl.DESK_WORK):
     """
     the right side of body should face the camera and 1m away.
     """
@@ -21,6 +22,7 @@ def main_training(train_mode: str = "desk work"):
     cap = cv.VideoCapture(cl.VIDEO_CAMERA_MAC)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cl.VIDEO_FRAME_WIDTH)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, cl.VIDEO_FRAME_HEIGHT)
+    cap.set(cv.CAP_PROP_FPS, 15)
     writer = recording_format()
 
     # setting holistic
@@ -69,6 +71,20 @@ def main_training(train_mode: str = "desk work"):
                 # train mode statement
                 match train_mode:
                     # drawing landmarks and checking posture
+                    case cl.DESK_WORK:
+                        check_angle = check_straight_neck(landmarks, landmarks_idx)
+                        # instruct voice for neck angle over 30 degree
+                        if cl.STRAIGHT_NECK_ANGLE < check_angle:
+                            cv.putText(
+                                image,
+                                str(check_angle),
+                                (10, 30),
+                                cv.FONT_HERSHEY_SIMPLEX,
+                                1,
+                                (0, 0, 255),
+                                2,
+                                cv.LINE_AA,
+                            )
                     case cl.SQUAT:
                         image = drawing_squad_landmarks(image, landmarks, landmarks_idx)
                     case cl.PLANK:
@@ -615,5 +631,36 @@ def drawing_push_up_landmarks(image, landmarks, land_idx) -> np.ndarray:
     return image
 
 
+def check_straight_neck(landmarks, land_idx) -> float:
+    """
+    check straight neck
+    out angle: over 30 degree
+    """
+
+    cie = namedtuple("Coordinates", ["x", "y"])
+    landmark = landmarks.landmark
+
+    l_ear_x, l_ear_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_EAR].x, landmark[land_idx.LEFT_EAR].y
+    )
+
+    l_sholder_x, l_sholder_y = cie_landmark2videosize(
+        landmark[land_idx.LEFT_SHOULDER].x, landmark[land_idx.LEFT_SHOULDER].y
+    )
+
+    ex_l_sholder = cie(l_sholder_x, l_sholder_y - cl.EXTENTOIN_CIE)
+
+    d1 = math.sqrt(
+        (l_sholder_x - ex_l_sholder.x) ** 2 + (l_sholder_y - ex_l_sholder.y) ** 2
+    )
+    d2 = math.sqrt((l_sholder_x - l_ear_x) ** 2 + (l_sholder_y - l_ear_y) ** 2)
+    d3 = math.sqrt((ex_l_sholder.x - l_ear_x) ** 2 + (ex_l_sholder.y - l_ear_y) ** 2)
+
+    cos_theta = (d1**2 + d2**2 - d3**2) / (2 * d1 * d2)
+    straight_neck_angle = math.degrees(math.acos(cos_theta))
+
+    return straight_neck_angle
+
+
 if __name__ == "__main__":
-    main_training(cl.PUSH_UP)
+    main_training()
