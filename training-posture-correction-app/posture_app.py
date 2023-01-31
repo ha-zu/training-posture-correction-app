@@ -59,10 +59,23 @@ def main_training(train_mode: str = cl.DESK_WORK):
             landmarks_idx = mp_pose.PoseLandmark
 
             # masking captured image(demo mode)
-            condition = np.stack((results.segmentation_mask,) * 3, axis=2) > 0.1
-            bg_image = np.zeros(image.shape, dtype=np.uint8)
-            bg_image[:] = (229, 229, 229)
-            image = np.where(condition, image, bg_image)
+            try:
+                condition = np.stack((results.segmentation_mask,) * 3, axis=2) > 0.1
+                bg_image = np.zeros(image.shape, dtype=np.uint8)
+                bg_image[:] = (229, 229, 229)
+                image = np.where(condition, image, bg_image)
+            except:
+                image = cv.rectangle(image, (0, 0), (cl.VIDEO_FRAME_WIDTH ,cl.VIDEO_FRAME_HEIGHT), (0, 0, 0), -1)
+                cv.putText(
+                    image,
+                    "Loading...",
+                    (int(cl.VIDEO_FRAME_WIDTH / 2), int(cl.VIDEO_FRAME_HEIGHT / 2)),
+                    cv.FONT_HERSHEY_SIMPLEX,
+                    1,
+                    (255, 255, 255),
+                    2,
+                    cv.LINE_AA,
+                )
 
             # drawing base posture points
             if landmarks is not None:
