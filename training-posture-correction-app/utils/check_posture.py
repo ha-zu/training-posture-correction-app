@@ -21,14 +21,3 @@ def calculate_knee_toe_position(landmark) -> bool:
         position = True if left_foot_index[cl.X] < left_knee[cl.X] else False
 
     return position
-
-
-def calculate_plank_posture(landmark) -> bool:
-    """
-    head angle
-    shoulder points
-    waist points
-    knee points
-    ankle points
-    """
-    pass

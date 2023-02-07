@@ -83,7 +83,7 @@ def main_training(train_mode: str, side: str):
                 if train_mode is None:
                     # check_straight_neck
                     neck_angle = lc.calculate_neck_angle(land_lists, side)
-                    print(neck_angle)
+
                     if neck_angle > cl.STRAIGHT_NECK_ANGLE:
                         color = cl.COLOR_RED
                     else:
@@ -111,8 +111,6 @@ def main_training(train_mode: str, side: str):
                     # arm degree
                     elbow_angle = lc.calculate_elbow_angle(land_lists)
                     armpits_angle = lc.calculate_armpits_angle(land_lists)
-                    check_plank_posture = cp.calculate_plank_posture(land_lists)
-                    print("elbow", elbow_angle, "arm:", armpits_angle)
                     if (
                         (
                             elbow_angle <= cl.PLANK_ANGLE_UPPER
@@ -122,9 +120,9 @@ def main_training(train_mode: str, side: str):
                             armpits_angle <= cl.PLANK_ANGLE_UPPER
                             and armpits_angle >= cl.PLANK_ANGLE_LOWER
                         )
-                        and check_plank_posture
                     ):
-                        print("OK")
+                        # Todo timer
+                        pass
                     else:
                         color = cl.COLOR_RED
 
@@ -138,7 +136,6 @@ def main_training(train_mode: str, side: str):
                     if elbow_angle < cl.PUSH_UP_ANGLE_LOWER and base_posture:
                         base_posture = False
                         rep_count += 1
-                        print("count", rep_count, elbow_angle)
 
                 # set connect between landmark points
                 cap_img = dw.draw_lines_between_landmarks(
