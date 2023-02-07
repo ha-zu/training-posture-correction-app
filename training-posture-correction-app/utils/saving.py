@@ -24,6 +24,7 @@ def recording_format() -> Any:
 
 
 def save_image(image):
+    """save capture image"""
 
     filename = os.path.join(
         os.getcwd(), cl.IMAGE_OUT_DIR, "{}.png".format(uuid.uuid1())
