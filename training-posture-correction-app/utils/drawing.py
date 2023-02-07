@@ -81,7 +81,7 @@ def draw_lines_between_landmarks(
 
 
 def drawing_text(
-    cap_img, txt=cl.LOADING, point=cl.VIDEO_FRAME_CENTER, color=cl.COLOR_WHITE
+    cap_img, txt, point=cl.VIDEO_FRAME_CENTER, color=cl.COLOR_WHITE
 ) -> np.ndarray:
     """
     inserting text into a captured image
@@ -94,6 +94,7 @@ def drawing_text(
 
     output: video capture image
     """
+
     cv.putText(cap_img, txt, point, cv.FONT_HERSHEY_SIMPLEX, 1, color, 2, cv.LINE_AA)
 
     return cap_img

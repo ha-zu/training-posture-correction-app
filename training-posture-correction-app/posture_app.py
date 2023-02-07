@@ -1,8 +1,7 @@
-import time
-
 import cv2 as cv
 import mediapipe as mp
 import numpy as np
+from utils import check_posture as cp
 from utils import constant_list as cl
 from utils import drawing as dw
 from utils import landmark_calculator as lc
@@ -23,6 +22,8 @@ def main_training(train_mode: str, side: str):
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, cl.VIDEO_FRAME_HEIGHT)
     cap.set(cv.CAP_PROP_FPS, 15)
     writer = sv.recording_format()
+    rep_count = 0
+    base_posture = False
 
     # setting holistic
     with mp_pose.Pose(
@@ -65,53 +66,79 @@ def main_training(train_mode: str, side: str):
                 p1 = (0, 0)
                 p2 = (cl.VIDEO_FRAME_WIDTH, cl.VIDEO_FRAME_HEIGHT)
                 cap_img = cv.rectangle(cap_img, p1, p2, cl.COLOR_BLACK, -1)
-                cap_img = dw.drawing_text(cap_img)
+                cap_img = dw.drawing_text(cap_img, cl.LOADING)
 
             # drawing base posture points
             if landmarks is not None:
                 # get using landmark lists
                 landmarks = landmarks.landmark
-                land_lists = using_landmark_lists(landmarks)
+                land_lists = lc.using_landmark_lists(landmarks)
 
                 # set landmark points
                 cap_img = dw.drawing_landmark_points(
                     cap_img, land_lists, train_mode, side
                 )
 
+                color = cl.COLOR_GREEN
                 if train_mode is None:
                     # check_straight_neck
                     neck_angle = lc.calculate_neck_angle(land_lists, side)
                     print(neck_angle)
                     if neck_angle > cl.STRAIGHT_NECK_ANGLE:
                         color = cl.COLOR_RED
-                        start = time.time()
-                        print(start)
                     else:
                         color = cl.COLOR_GREEN
-                        end = time.time() - start
-                        print(end)
+
                 elif train_mode == cl.SQUAT:
                     # knee degree
                     knee_angle = lc.calculate_knee_angle(land_lists)
-                    if knee_angle < cl.SQUAT_ANGLE:
-                        count = +1
-                        print(count)
+                    position = cp.calculate_knee_toe_position(land_lists)
+
+                    if not position:
+                        # if knees are in front of your toe
+                        color = cl.COLOR_RED
+
+                    if knee_angle > cl.SQUAT_ANGLE:
+                        # standing posture
+                        base_posture = True
+
+                    if knee_angle < cl.SQUAT_ANGLE and base_posture and position:
+                        # angle and before standing position and if knees are not in front of your toe
+                        base_posture = False
+                        rep_count += 1
+
                 elif train_mode == cl.PLANK:
                     # arm degree
                     elbow_angle = lc.calculate_elbow_angle(land_lists)
                     armpits_angle = lc.calculate_armpits_angle(land_lists)
-                    check_plank_posture = lc.calculate_plank_posture(land_lists)
+                    check_plank_posture = cp.calculate_plank_posture(land_lists)
+                    print("elbow", elbow_angle, "arm:", armpits_angle)
                     if (
-                        elbow_angle == cl.PLANK_ANGLE
-                        and armpits_angle == cl.PLANK_ANGLE
+                        (
+                            elbow_angle <= cl.PLANK_ANGLE_UPPER
+                            and elbow_angle >= cl.PLANK_ANGLE_LOWER
+                        )
+                        and (
+                            armpits_angle <= cl.PLANK_ANGLE_UPPER
+                            and armpits_angle >= cl.PLANK_ANGLE_LOWER
+                        )
                         and check_plank_posture
                     ):
-                        pass
+                        print("OK")
+                    else:
+                        color = cl.COLOR_RED
+
                 elif train_mode == cl.PUSH_UP:
                     # arm degree
                     elbow_angle = lc.calculate_elbow_angle(land_lists)
-                    if elbow_angle < cl.PUSH_UP_ANGLE:
-                        count = +1
+
+                    if elbow_angle > cl.PUSH_UP_ANGLE_UPPER:
+                        base_posture = True
+
+                    if elbow_angle < cl.PUSH_UP_ANGLE_LOWER and base_posture:
+                        base_posture = False
+                        rep_count += 1
+                        print("count", rep_count, elbow_angle)
 
                 # set connect between landmark points
                 cap_img = dw.draw_lines_between_landmarks(
@@ -130,36 +157,5 @@ def main_training(train_mode: str, side: str):
     cv.destroyAllWindows()
 
 
-def using_landmark_lists(landmarks) -> list:
-    """
-    Convert the landmarks to be used into
-    video capture coordinates and store them
-
-    input: points detected by mediapipe
-    output: using landmark list
-    """
-
-    using_landmark = []
-
-    for index in cl.LANDMARK_INDEXES:
-        landmark = lc.calculate_landmark2video_coords(landmarks[index])
-        using_landmark.append(landmark)
-
-    center_l_shoulder = lc.calculate_center_landmark(using_landmark[2])
-    center_r_shoulder = lc.calculate_center_landmark(using_landmark[3])
-    center_shoulder_x = center_l_shoulder[cl.X] + center_r_shoulder[cl.X]
-    center_shoulder_y = center_l_shoulder[cl.Y] + center_r_shoulder[cl.Y]
-
-    center_l_waist = lc.calculate_center_landmark(using_landmark[8])
-    center_r_waist = lc.calculate_center_landmark(using_landmark[9])
-    center_waist_x = center_l_waist[cl.X] + center_r_waist[cl.X]
-    center_waist_y = center_l_waist[cl.Y] + center_r_waist[cl.Y]
-
-    using_landmark.append((center_shoulder_x, center_shoulder_y))
-    using_landmark.append((center_waist_x, center_waist_y))
-
-    return using_landmark
-
-
 if __name__ == "__main__":
-    main_training(train_mode=None, side=cl.LEFT_SIDE)
+    main_training(train_mode=cl.SQUAT, side=cl.LEFT_SIDE)

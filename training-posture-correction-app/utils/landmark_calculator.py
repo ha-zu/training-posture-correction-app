@@ -4,13 +4,44 @@ from typing import Tuple
 from utils import constant_list as cl
 
 
-def calculate_law_of_cosine(point1, point2, point3) -> float:
+def using_landmark_lists(landmarks) -> list:
+    """
+    Convert the landmarks to be used into
+    video capture coordinates and store them
+
+    input: points detected by mediapipe
+    output: using landmark list
+    """
+
+    using_landmark = []
+
+    for index in cl.LANDMARK_INDEXES:
+        landmark = calculate_landmark2video_coords(landmarks[index])
+        using_landmark.append(landmark)
+
+    center_l_shoulder = calculate_center_landmark(using_landmark[2])
+    center_r_shoulder = calculate_center_landmark(using_landmark[3])
+    center_shoulder_x = center_l_shoulder[cl.X] + center_r_shoulder[cl.X]
+    center_shoulder_y = center_l_shoulder[cl.Y] + center_r_shoulder[cl.Y]
+
+    center_l_waist = calculate_center_landmark(using_landmark[8])
+    center_r_waist = calculate_center_landmark(using_landmark[9])
+    center_waist_x = center_l_waist[cl.X] + center_r_waist[cl.X]
+    center_waist_y = center_l_waist[cl.Y] + center_r_waist[cl.Y]
+
+    using_landmark.append((center_shoulder_x, center_shoulder_y))
+    using_landmark.append((center_waist_x, center_waist_y))
+
+    return using_landmark
+
+
+def calculate_cosine(point1, point2, point3) -> float:
     """
     calculate neck_angle
     input:
-        point1 = target angle
-        point2 = edge side
-        point3 = edge side
+        point1:target angle
+        point2:edge side
+        point3:edge side
 
     output: calculated angle
     """
@@ -82,7 +113,7 @@ def calculate_neck_angle(landmark, side) -> float:
         shoulder = landmark[3]
         ex_point = (shoulder[cl.X], shoulder[cl.Y] - cl.EXTENTOIN_CIE)
 
-    return calculate_law_of_cosine(shoulder, ex_point, ear)
+    return calculate_cosine(shoulder, ex_point, ear)
 
 
 def calculate_knee_angle(landmark) -> float:
@@ -113,9 +144,9 @@ def calculate_knee_angle(landmark) -> float:
     left = sum([sum_left_knee, sum_left_waist, sum_left_ankle])
 
     if right > left:
-        angle = calculate_law_of_cosine(right_knee, right_ankle, right_waist)
+        angle = calculate_cosine(right_knee, right_ankle, right_waist)
     else:
-        angle = calculate_law_of_cosine(left_knee, left_ankle, left_waist)
+        angle = calculate_cosine(left_knee, left_ankle, left_waist)
 
     return angle
 
@@ -148,9 +179,9 @@ def calculate_elbow_angle(landmark) -> float:
     left = sum([sum_left_shoulder, sum_left_elbow, sum_left_wrist])
 
     if right > left:
-        angle = calculate_law_of_cosine(right_elbow, right_shoulder, right_wrist)
+        angle = calculate_cosine(right_elbow, right_shoulder, right_wrist)
     else:
-        angle = calculate_law_of_cosine(left_elbow, left_shoulder, left_wrist)
+        angle = calculate_cosine(left_elbow, left_shoulder, left_wrist)
 
     return angle
 
@@ -182,19 +213,8 @@ def calculate_armpits_angle(landmark) -> float:
     left = sum([sum_left_shoulder, sum_left_elbow, sum_left_waist])
 
     if right > left:
-        angle = calculate_law_of_cosine(right_shoulder, right_elbow, right_waist)
+        angle = calculate_cosine(right_shoulder, right_elbow, right_waist)
     else:
-        angle = calculate_law_of_cosine(left_shoulder, left_elbow, left_waist)
+        angle = calculate_cosine(left_shoulder, left_elbow, left_waist)
 
     return angle
-
-
-def calculate_plank_posture(landmark) -> bool:
-    """
-    head angle
-    shoulder points
-    waist points
-    knee points
-    ankle points
-    """
-    pass
