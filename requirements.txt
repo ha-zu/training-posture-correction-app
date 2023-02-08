@@ -6,6 +6,8 @@ contourpy==1.0.7
 cycler==0.11.0
 flake8==6.0.0
 Flask==2.2.2
+Flask-Admin==1.6.0
+Flask-AdminLTE3==1.0.9
 flatbuffers==23.1.21
 fonttools==4.38.0
 isort==5.12.0
@@ -170,3 +172,4 @@ pyttsx3==2.90
 six==1.16.0
 tomli==2.0.1
 Werkzeug==2.2.2
+WTForms==3.0.1
